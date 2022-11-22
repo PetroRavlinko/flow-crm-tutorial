@@ -1,6 +1,7 @@
 package com.example.application.views.list;
 
 import com.example.application.data.entity.Contact;
+import com.example.application.data.service.CrmService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
@@ -20,14 +21,17 @@ public class ListView extends VerticalLayout {
     TextField filterText = new TextField();
 
     ContactForm form;
+    private CrmService service;
 
-    public ListView() {
+    public ListView(CrmService service) {
+        this.service = service;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
         configureForm();
 
         add(getToolbar(), getContent());
+        updateList();
     }
 
     private Component getContent() {
@@ -57,11 +61,16 @@ public class ListView extends VerticalLayout {
         filterText.setPlaceholder("Filter by name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
 
         Button addContactButton = new Button("Add contact");
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);
         toolbar.addClassName("toolbar");
         return toolbar;
+    }
+
+    private void updateList() {
+        grid.setItems(service.findAllContacts(filterText.getValue()));
     }
 }
