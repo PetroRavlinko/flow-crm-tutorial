@@ -37,6 +37,7 @@ public class ContactForm extends FormLayout {
 
     public ContactForm(List<Company> companies, List<Status> statuses) {
         addClassName("contact-form");
+        binder.bindInstanceFields(this);
 
         company.setItems(companies);
         company.setItemLabelGenerator(Company::getName);
