@@ -26,7 +26,7 @@ public class ListView extends VerticalLayout {
     TextField filterText = new TextField();
 
     ContactForm form;
-    private CrmService service;
+    private final CrmService service;
 
     public ListView(CrmService service) {
         this.service = service;

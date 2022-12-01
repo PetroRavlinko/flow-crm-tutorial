@@ -62,3 +62,7 @@ INSERT INTO "CONTACT" VALUES
 ('e213341c-7ac6-4046-b6d6-9dd1291c9610', 'bryan.shaw@ha.ee', 'Bryan', 'Shaw', '2fb669ec-0659-49fb-af9f-e6f71ce8156f', '72b11cec-0080-496a-a3a9-92494007befb'),
 ('78ad4f94-9c94-44de-83ca-611e92fbdd0a', 'essie.adams@iliat.cw', 'Essie', 'Adams', '8cf87de5-574d-44ab-bf7f-25dec35cca73', 'b501cfdc-ea0b-4659-b6d5-0449467a9ca0'),
 ('c0bfcccc-2e4c-4915-b061-ea570062465f', 'gary.osborne@do.ga', 'Gary', 'Osborne', 'c58f8dd9-95dc-4d01-836b-4df6b37de527', 'b501cfdc-ea0b-4659-b6d5-0449467a9ca0');
+
+INSERT INTO "TIME_SLOT" VALUES
+                          ('48767ba4-a9a2-4c0b-9ce9-cf0c53e8e45e', 'Investigate fulfilment workflow'),
+                          ('8db2356e-c5a4-461d-b231-6e13d4b48757', 'Deliver changes');
