@@ -64,5 +64,5 @@ INSERT INTO "CONTACT" VALUES
 ('c0bfcccc-2e4c-4915-b061-ea570062465f', 'gary.osborne@do.ga', 'Gary', 'Osborne', 'c58f8dd9-95dc-4d01-836b-4df6b37de527', 'b501cfdc-ea0b-4659-b6d5-0449467a9ca0');
 
 INSERT INTO "TIME_SLOT" VALUES
-                          ('48767ba4-a9a2-4c0b-9ce9-cf0c53e8e45e', 'Investigate fulfilment workflow'),
-                          ('8db2356e-c5a4-461d-b231-6e13d4b48757', 'Deliver changes');
+                          ('48767ba4-a9a2-4c0b-9ce9-cf0c53e8e45e', 'Investigate fulfilment workflow', 2.0),
+                          ('8db2356e-c5a4-461d-b231-6e13d4b48757', 'Deliver changes', 1.0);

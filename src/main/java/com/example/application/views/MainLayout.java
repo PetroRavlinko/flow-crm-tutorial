@@ -49,7 +49,6 @@ public class MainLayout extends AppLayout {
 
         addToDrawer(new VerticalLayout(
                 listLink,
-                new RouterLink("Dashboard", DashboardView.class),
                 new RouterLink("Tracker", TimeTrackerView.class)
         ));
     }

@@ -10,6 +10,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -19,13 +21,16 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
 import java.util.List;
+import java.util.Objects;
 
 @PermitAll
 @Route(value = "tracker", layout = MainLayout.class)
 @PageTitle("Tracker | Vaadin CRM")
 public class TimeTrackerView extends VerticalLayout {
     private static final String DESCRIPTION_FIELD_NAME = "description";
+    public static final String HOURS_FIELD_NAME = "hours";
     ValidationMessage descriptionValidationMessage = new ValidationMessage();
+    ValidationMessage hoursValidationMessage = new ValidationMessage();
     Grid<TimeSlot> grid = new Grid<>(TimeSlot.class);
 
     Binder<TimeSlot> binder = new BeanValidationBinder<>(TimeSlot.class);
@@ -40,7 +45,7 @@ public class TimeTrackerView extends VerticalLayout {
         configureGrid();
         configureEditor();
 
-        add(descriptionValidationMessage, getContent());
+        add(descriptionValidationMessage, hoursValidationMessage, getContent());
 
         updateList();
     }
@@ -48,7 +53,7 @@ public class TimeTrackerView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("slots-grid");
         grid.setSizeFull();
-        grid.setColumns(DESCRIPTION_FIELD_NAME);
+        grid.setColumns(DESCRIPTION_FIELD_NAME, HOURS_FIELD_NAME);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.addItemDoubleClickListener(e -> {
@@ -91,12 +96,29 @@ public class TimeTrackerView extends VerticalLayout {
                 .orElseThrow()
                 .setEditorComponent(descriptionField);
 
-        editor.addCancelListener(e -> descriptionValidationMessage.setText(""));
+        NumberField hoursField = new NumberField();
+        hoursField.setWidthFull();
+        addCloseHandler(hoursField, editor);
+        addSaveHandler(hoursField, editor);
+        binder.forField(hoursField)
+                .withValidator(h -> Objects.nonNull(h) && h > 0, "Hours should be positive")
+                .withStatusLabel(hoursValidationMessage)
+                .bind(TimeSlot::getHours, TimeSlot::setHours);
+        grid.getColumns().stream()
+                .filter(c -> HOURS_FIELD_NAME.equals(c.getKey()))
+                .findAny()
+                .orElseThrow()
+                .setEditorComponent(hoursField);
+
+        editor.addCancelListener(e -> {
+            descriptionValidationMessage.setText("");
+            hoursValidationMessage.setText("");
+        });
         editor.addCloseListener(e -> {
             try {
                 binder.writeBean(e.getItem());
             } catch (ValidationException ex) {
-                 return;
+                return;
             }
             service.save(e.getItem());
             updateList();
@@ -107,6 +129,7 @@ public class TimeTrackerView extends VerticalLayout {
         textField.getElement().addEventListener("keydown", e -> editor.cancel())
                 .setFilter("event.code === 'Escape'");
     }
+
     private static void addSaveHandler(Component textField, Editor<TimeSlot> editor) {
         textField.getElement().addEventListener("keydown", e -> editor.save())
                 .setFilter("event.code === 'Enter'");
