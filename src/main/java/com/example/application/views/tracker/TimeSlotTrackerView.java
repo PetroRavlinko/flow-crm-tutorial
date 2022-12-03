@@ -1,16 +1,17 @@
 package com.example.application.views.tracker;
 
+import com.example.application.data.entity.Task;
 import com.example.application.data.entity.TimeSlot;
-import com.example.application.data.service.TrackerService;
+import com.example.application.data.service.TaskService;
+import com.example.application.data.service.TimeSlotService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Focusable;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -26,8 +27,9 @@ import java.util.Objects;
 @PermitAll
 @Route(value = "tracker", layout = MainLayout.class)
 @PageTitle("Tracker | Vaadin CRM")
-public class TimeTrackerView extends VerticalLayout {
+public class TimeSlotTrackerView extends VerticalLayout {
     private static final String DESCRIPTION_FIELD_NAME = "description";
+    private static final String TASK_FIELD_NAME = "task";
     public static final String HOURS_FIELD_NAME = "hours";
     ValidationMessage descriptionValidationMessage = new ValidationMessage();
     ValidationMessage hoursValidationMessage = new ValidationMessage();
@@ -35,10 +37,12 @@ public class TimeTrackerView extends VerticalLayout {
 
     Binder<TimeSlot> binder = new BeanValidationBinder<>(TimeSlot.class);
     Editor<TimeSlot> editor = grid.getEditor();
-    private TrackerService service;
+    private TimeSlotService timeSlotService;
+    private TaskService taskService;
 
-    public TimeTrackerView(TrackerService service) {
-        this.service = service;
+    public TimeSlotTrackerView(TimeSlotService timeSlotService, TaskService taskService) {
+        this.timeSlotService = timeSlotService;
+        this.taskService = taskService;
         addClassName("tracker-view");
 
         setSizeFull();
@@ -54,6 +58,7 @@ public class TimeTrackerView extends VerticalLayout {
         grid.addClassNames("slots-grid");
         grid.setSizeFull();
         grid.setColumns(DESCRIPTION_FIELD_NAME, HOURS_FIELD_NAME);
+        grid.addColumn(timeSlot -> Objects.nonNull(timeSlot.getTask()) ? timeSlot.getTask().getName() : "").setKey(TASK_FIELD_NAME).setHeader("Task");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.addItemDoubleClickListener(e -> {
@@ -74,7 +79,7 @@ public class TimeTrackerView extends VerticalLayout {
     }
 
     private void updateList() {
-        List<TimeSlot> allSlots = service.findAllSlots();
+        List<TimeSlot> allSlots = timeSlotService.findAllSlots();
         allSlots.add(new TimeSlot());
         grid.setItems(allSlots);
     }
@@ -110,6 +115,22 @@ public class TimeTrackerView extends VerticalLayout {
                 .orElseThrow()
                 .setEditorComponent(hoursField);
 
+
+        ComboBox<Task> taskComboBox= new ComboBox();
+        taskComboBox.setWidthFull();
+        taskComboBox.setItems(taskService.findAll());
+        taskComboBox.setItemLabelGenerator(Task::getName);
+        addCloseHandler(taskComboBox, editor);
+        addSaveHandler(taskComboBox, editor);
+        binder.forField(taskComboBox)
+                .withStatusLabel(hoursValidationMessage)
+                .bind(TimeSlot::getTask, TimeSlot::setTask);
+        grid.getColumns().stream()
+                .filter(c -> TASK_FIELD_NAME.equals(c.getKey()))
+                .findAny()
+                .orElseThrow()
+                .setEditorComponent(taskComboBox);
+
         editor.addCancelListener(e -> {
             descriptionValidationMessage.setText("");
             hoursValidationMessage.setText("");
@@ -120,7 +141,7 @@ public class TimeTrackerView extends VerticalLayout {
             } catch (ValidationException ex) {
                 return;
             }
-            service.save(e.getItem());
+            timeSlotService.save(e.getItem());
             updateList();
         });
     }

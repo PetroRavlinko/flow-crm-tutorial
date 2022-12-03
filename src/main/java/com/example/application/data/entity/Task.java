@@ -3,9 +3,12 @@ package com.example.application.data.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
-import javax.validation.constraints.Min;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
+import java.util.LinkedList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,6 +16,8 @@ import javax.validation.constraints.NotEmpty;
 public class Task extends AbstractEntity {
     @NotEmpty
     private String name = "";
-    @Min(0)
-    private double hours = .0;
+
+    @OneToMany(mappedBy = "task")
+    @Nullable
+    private List<TimeSlot> timeSlots = new LinkedList<>();
 }

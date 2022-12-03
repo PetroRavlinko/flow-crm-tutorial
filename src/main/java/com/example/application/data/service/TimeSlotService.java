@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TrackerService {
+public class TimeSlotService {
     private final TimeSlotRepository timeSlotRepository;
 
-    public TrackerService(TimeSlotRepository timeSlotRepository) {
+    public TimeSlotService(TimeSlotRepository timeSlotRepository) {
         this.timeSlotRepository = timeSlotRepository;
     }
 
