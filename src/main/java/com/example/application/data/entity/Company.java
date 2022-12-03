@@ -1,5 +1,7 @@
 package com.example.application.data.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Formula;
 
 import java.util.LinkedList;
@@ -9,35 +11,16 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 
+@Getter
 @Entity
 public class Company extends AbstractEntity {
+    @Setter
     @NotBlank
     private String name;
-
     @Formula("(select count(c.id) from Contact c where c.company_id = id)")
     private int employeeCount;
-
-    public int getEmployeeCount(){
-        return employeeCount;
-    }
-
+    @Setter
     @OneToMany(mappedBy = "company")
     @Nullable
     private List<Contact> employees = new LinkedList<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Contact> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Contact> employees) {
-        this.employees = employees;
-    }
 }

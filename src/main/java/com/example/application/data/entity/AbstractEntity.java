@@ -1,26 +1,23 @@
 package com.example.application.data.entity;
 
-import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import org.hibernate.annotations.Type;
+import java.util.UUID;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
 
+    @Getter
+    @Setter
     @Id
     @GeneratedValue
     @Type(type = "uuid-char")
     private UUID id;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
