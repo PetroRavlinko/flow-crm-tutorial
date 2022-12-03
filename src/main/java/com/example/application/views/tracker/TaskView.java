@@ -23,8 +23,8 @@ import java.util.List;
 @org.springframework.stereotype.Component
 @Scope("prototype")
 @PermitAll
-@Route(value = "", layout = MainLayout.class)
-@PageTitle("Task | Vaadin CRM")
+@Route(value = "task", layout = MainLayout.class)
+@PageTitle("Task | Time Tracker")
 public class TaskView extends VerticalLayout {
     private static final String NAME_FIELD_NAME = "name";
     ValidationMessage nameValidationMessage = new ValidationMessage();
@@ -36,7 +36,7 @@ public class TaskView extends VerticalLayout {
 
     public TaskView(TaskService service) {
         this.service = service;
-        addClassName("tracker-view");
+        addClassName("task-view");
 
         setSizeFull();
         configureGrid();
@@ -48,7 +48,7 @@ public class TaskView extends VerticalLayout {
     }
 
     private void configureGrid() {
-        grid.addClassNames("slots-grid");
+        grid.addClassNames("tasks-grid");
         grid.setSizeFull();
         grid.setColumns(NAME_FIELD_NAME);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

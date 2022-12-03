@@ -22,7 +22,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("Vaadin CRM");
+        H1 logo = new H1("Time Tracker");
         logo.addClassNames("text-l", "m-m");
 
         Button logout = new Button("Log out", e -> securityService.logout());
@@ -44,6 +44,7 @@ public class MainLayout extends AppLayout {
 
     private void createDrawer() {
         addToDrawer(new VerticalLayout(
+                new RouterLink("Dashboard", DashboardView.class),
                 new RouterLink("Task", TaskView.class),
                 new RouterLink("Tracker", TimeSlotTrackerView.class)
         ));

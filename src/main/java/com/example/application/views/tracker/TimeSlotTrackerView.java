@@ -26,7 +26,7 @@ import java.util.Objects;
 
 @PermitAll
 @Route(value = "tracker", layout = MainLayout.class)
-@PageTitle("Tracker | Vaadin CRM")
+@PageTitle("Time | Time Tracker")
 public class TimeSlotTrackerView extends VerticalLayout {
     private static final String DESCRIPTION_FIELD_NAME = "description";
     private static final String TASK_FIELD_NAME = "task";
@@ -43,7 +43,7 @@ public class TimeSlotTrackerView extends VerticalLayout {
     public TimeSlotTrackerView(TimeSlotService timeSlotService, TaskService taskService) {
         this.timeSlotService = timeSlotService;
         this.taskService = taskService;
-        addClassName("tracker-view");
+        addClassName("slots-view");
 
         setSizeFull();
         configureGrid();
