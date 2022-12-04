@@ -1,6 +1,7 @@
 package com.example.application.views;
 
 import com.example.application.security.SecurityService;
+import com.example.application.views.dashboard.DashboardView;
 import com.example.application.views.tracker.TaskView;
 import com.example.application.views.tracker.TimeSlotTrackerView;
 import com.vaadin.flow.component.applayout.AppLayout;
