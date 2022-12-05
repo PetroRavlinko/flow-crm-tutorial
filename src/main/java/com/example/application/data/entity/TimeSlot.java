@@ -1,6 +1,7 @@
 package com.example.application.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class TimeSlot extends AbstractEntity {
     @NotEmpty
@@ -20,7 +22,7 @@ public class TimeSlot extends AbstractEntity {
     @Min(0)
     private double hours = .0;
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "taskId")
     @Nullable
     @JsonIgnoreProperties({"timeSlots"})
     private Task task;

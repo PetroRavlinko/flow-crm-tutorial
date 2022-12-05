@@ -1,5 +1,6 @@
 package com.example.application.data.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class Task extends AbstractEntity {
     @NotEmpty
