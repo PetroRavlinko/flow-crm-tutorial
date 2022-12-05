@@ -50,7 +50,7 @@ public class TaskView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("tasks-grid");
         grid.setSizeFull();
-        grid.setColumns(NAME_FIELD_NAME);
+        grid.setColumns(NAME_FIELD_NAME, "createdAt", "modifiedAt");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.addItemDoubleClickListener(e -> {
