@@ -18,6 +18,9 @@ import com.vaadin.flow.router.Route;
 import org.springframework.context.annotation.Scope;
 
 import javax.annotation.security.PermitAll;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @org.springframework.stereotype.Component
@@ -50,7 +53,11 @@ public class TaskView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("tasks-grid");
         grid.setSizeFull();
-        grid.setColumns(NAME_FIELD_NAME, "createdAt", "modifiedAt");
+        grid.setColumns(NAME_FIELD_NAME);
+
+        final DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+        grid.addColumn(t -> fmt.format(new Date(t.getCreatedAt()))).setHeader("Created");
+        grid.addColumn(t -> fmt.format(new Date(t.getModifiedAt()))).setHeader("Modified");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.addItemDoubleClickListener(e -> {

@@ -21,6 +21,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +62,11 @@ public class TimeSlotTrackerView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns(DESCRIPTION_FIELD_NAME, HOURS_FIELD_NAME);
         grid.addColumn(timeSlot -> Objects.nonNull(timeSlot.getTask()) ? timeSlot.getTask().getName() : "").setKey(TASK_FIELD_NAME).setHeader("Task");
+        final DateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+        grid.addColumn(t -> fmt.format(new Date(t.getCreatedAt()))).setHeader("Created");
+        grid.addColumn(t -> fmt.format(new Date(t.getModifiedAt()))).setHeader("Modified");
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.addItemDoubleClickListener(e -> {
